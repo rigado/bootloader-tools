@@ -1,5 +1,15 @@
 /* Sign a firmware binary image for the RigDFU bootloader */
 
+/*
+  Tool to build RigDfu firmware images from hex files
+  
+  @copyright (c) Rigado, LLC. All rights reserved.
+
+  Source code licensed under BMD-200 Software License Agreement.
+  You should have received a copy with purchase of BMD-200 product.
+  If not, contact info@rigado.com for for a copy. 
+*/
+
 #include <cryptopp/osrng.h>
 #include <cryptopp/aes.h>
 #include <cryptopp/eax.h>

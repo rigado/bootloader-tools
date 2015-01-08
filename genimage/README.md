@@ -11,7 +11,7 @@ Build
 Install dependencies:
 
 Linux:
-    sudo apt-get install build-essential libcryptopp-dev
+    sudo apt-get install build-essential libcrypto++-dev
 
 OS X:
 Using Homebrew package installer:

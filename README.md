@@ -46,7 +46,15 @@ To flash the bootloader and soft device to a blank module, a few tools are provi
 Windows
 -------
 
-TBD
+1. Install the following tools:
+    * Python 2.7.x for Windows
+        + https://www.python.org/downloads/
+    * Segger J-Link software & documentation pack for windows
+        + https://www.segger.com/jlink-software.html
+	
+2. Add Python 2.7.X and Segger J-Link to your path.
+3. Run the installer batch file:
+    * flashall.bat mac_address private_key
 
 OS X and Linux
 --------------

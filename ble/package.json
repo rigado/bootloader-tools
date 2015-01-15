@@ -1,0 +1,19 @@
+{
+  "name": "rigdfu-ble",
+  "version": "2.0.0",
+  "description": "Rigado DFU over BLE",
+  "main": "dfu.js",
+  "repository": {},
+  "dependencies": {
+    "async": "^0.9.0",
+    "bitsyntax": "0.0.4",
+    "commander": "^2.5.0",
+    "noble": "^0.3.5",
+    "sprintf-js": "^1.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jim Paris <jim.paris@rigado.com>"
+}

@@ -51,4 +51,4 @@ DFU mobile apps can be used for this purpose.
 
 We are working on a version that will allow you to load the application via the USB UART attached to the module.
 
-[Home](https://github.com/rigado/bootloader-tools/blob/master/README.md)
+[Home](https://github.com/rigado/bootloader-tools/)

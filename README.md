@@ -41,8 +41,8 @@ Memory Organization Table
 Setup for a blank module
 ------------------------
 
-To flash the bootloader and soft device to a blank module, a few tools are provided.
+[Windows Guide](https://github.com/rigado/bootloader-tools/blob/master/windows/README.md)
 
-[Windows Setup](https://github.com/rigado/bootloader-tools/blob/master/windows/README.md)
+[OS X Guide](https://github.com/rigado/bootloader-tools/tree/master/osx)
 
 WIP

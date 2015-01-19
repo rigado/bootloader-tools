@@ -41,8 +41,8 @@ Memory Organization Table
 Setup for a blank module
 ------------------------
 
-[Windows Guide](https://github.com/rigado/bootloader-tools/blob/master/windows/README.md)
+[Linux Guide](https://github.com/rigado/bootloader-tools/tree/master/linux)
 
 [OS X Guide](https://github.com/rigado/bootloader-tools/tree/master/osx)
 
-WIP
+[Windows Guide](https://github.com/rigado/bootloader-tools/blob/master/windows/README.md)

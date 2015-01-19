@@ -11,10 +11,11 @@ Build
 Install dependencies:
 
 Linux:
+
     sudo apt-get install build-essential libcrypto++-dev
 
-OS X:
-Using Homebrew package installer:
+OS X using Homebrew package installer:
+
     sudo brew install cryptopp
 
 Compile:
@@ -133,5 +134,5 @@ either all 0's or all 0xFF.  In this case, you still need to provide a binary
 as produces from genimage.  The genimage tool adds some information to the
 beginning of the binary that is required for the bootloader.
 
-However, you do not sign the image.  Signing the image will produce an
-invalid result.
+However, you do not sign the image.  Signing the image will cause the OTA update
+to fail.

@@ -14,11 +14,11 @@ the key 00112233445566778899aabbccddeeff.*
 
 Setup
 -----
-1. Install the following tools:
-    * Node.js
-        ```brew install node```
-    * Node Package Manager (npm)
-        ```brew install npm```
+1. Install Node.js and the Node.js Package Manager:
+    
+      ```brew install node
+      brew install npm```
+
 2. Attach a JLink programmer to your Mac (either via USB directly with an eval board or your debugger)
 
 Flash the Bootloader and S110 Softdevice 7.1.0
@@ -56,11 +56,16 @@ with which to sign the image.  The private keys for signimage are 128-bit.
 Installing your application
 ---------------------------
 
-1. Using terminal, navigate to the ble folder in bootloader-tools.
-2. Ensure the device you want to update is the only Rigado Bootloader device that is advertising.
-3. npm install
-    * The above will install all necessry node packages
+1. Using terminal, navigate to the ble folder in bootloader-tools
+
+2. Ensure the device you want to update is the only Rigado Bootloader device that is advertising
+
+3. Install all required node modules
+
+    ```npm install```
+    
 4. Use one of the following to install the OTA update:
+  
   ```
   For unsigned binaries:
   sudo node dfu.js path/to/blinky.bin
@@ -68,6 +73,7 @@ Installing your application
   For signed binaries:
   sudo node dfu.js path/to/blinky_signed.bin
   ```
-5. Wait for the update to complete and then verify operation.
+  
+5. Wait for the update to complete and then verify operation
 
 [Home](https://github.com/rigado/bootloader-tools/)

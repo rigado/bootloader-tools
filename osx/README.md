@@ -51,12 +51,7 @@ To generate a signed binary, first following the steps in the previous section. 
 for signed binary images.  Next, run the system approprite signimage executable and provide the key
 with which to sign the image.  The private keys for signimage are 128-bit.
 
-    For 32-bit systems:
-    signimage-w32 blinky.bin blinky_signed.bin 00112233445566778899aabbccddeeff
-    
-    For 64-bit systems:
-    signimage-w64 blinky.bin blinky_signed.bin 00112233445566778899aabbccddeeff
-    
+    signimage blinky.bin blinky_signed.bin 00112233445566778899aabbccddeeff
     
 Installing your application
 ---------------------------

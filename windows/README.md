@@ -1,24 +1,29 @@
 # Windows
 
-> *The following examples will assume you have an application called blinky.  Replace blinky with your own
-application file name.  Additionally, they will use the MAC address 123456abcdef and 
-the key 00112233445566778899aabbccddeeff.*
+> *The following examples will save the currently programmed MAC address and use the key 00112233445566778899aabbccddeeff.*
 
 
 Setup
 -----
 1. Install the following tools:
-    * Python 2.7.x for Windows
+    * Python 3.4.x for Windows
         + https://www.python.org/downloads/
     * Segger J-Link software & documentation pack for windows
         + https://www.segger.com/jlink-software.html
-2. Add Python 2.7.X and Segger J-Link to your path.
+2. Add Python 3.4.X and Segger J-Link to your path.
 3. Attach a JLink programmer to your PC (either via USB directly with an eval board or your debugger)
 
 Flash the Bootloader and S110 Softdevice 7.1.0
 ----------------------------------------------
-* Run the installer batch file:
-    + flashall.bat 123456abcdef 00112233445566778899aabbccddeeff
+* Run the installer script file:
+    + python program.py --savemac -k 00112233445566778899aabbccddeeff
+    + 
+
+If you wish to flash your application binary as well, do the following:
+
+1. Generate a binary for you application using your development tool chain. *DO NOT USE THE BELOW INSTRUCTIONS FOR THIS AS THE BINARY WILL BE INCORRECT.  THE BELOW TOOLS ARE _ONLY_ FOR OVER THE AIR UPDATE BINARIES.*
+2. Rename the binary to application.bin and place in this folder.
+3. Run the installer script file: `python program.py --savemac -k 00112233445566778899aabbccddeeff -a`
 
 Generating Unsigned Application Binaries
 ----------------------------------------

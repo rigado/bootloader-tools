@@ -10,8 +10,9 @@ Setup
 -----
 1. Install python 2.7.x and python 3.4.x if it is not already installed:
 
-    ```sudo apt-get install python```
-    ```sudo apt-get install python3```
+    `sudo apt-get install python`
+    
+    `sudo apt-get install python3`
 
 2. Install tools for building the image signing application
     

@@ -75,8 +75,8 @@ with which to sign the image.  The private keys for signimage are 128-bit.
 
     signimage blinky.bin blinky_signed.bin 00112233445566778899aabbccddeeff
     
-Installing your application
----------------------------
+Installing your application over the air
+----------------------------------------
 
 1. Using a shell, navigate to the ble folder in bootloader-tools
 

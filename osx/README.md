@@ -8,9 +8,7 @@ If you are unfamiliar with Brew (or other OS X package managers), check it out a
 http://brew.sh/.  If you do not have a package manager installed, follow the instructions
 on the brew website.
 
-> *The following examples will assume you have an application called blinky.  Replace blinky with your own
-application file name.  Additionally, they will use the MAC address 123456abcdef and 
-the key 00112233445566778899aabbccddeeff.*
+> *The following examples will use the factory programmed MAC address and the key 00112233445566778899aabbccddeeff.*
 
 Setup
 -----

@@ -13,26 +13,32 @@ Setup
     `sudo apt-get install python`
     
     `sudo apt-get install python3`
+    
+2. Install Segger JLink tools:
+    + https://www.segger.com/jlink-software.html 
+    + Tip: Download the TGZ archive
+    + Copy JLinkExe and libjlinkarm.so.4 from the archive to this folder
+    + We cannot provide these files directly due to the license agreement with Segger
 
-2. Install tools for building the image signing application
+3. Install tools for building the image signing application
     
     ```sudo apt-get install build-essential libcrypto++-dev```
 
-3. Build signimage from source Navigate to the signimage folder and run
+4. Build signimage from source Navigate to the signimage folder and run
     
     `make`
     
-4. Install the following tools for Bluetooth and Node.js:
+5. Install the following tools for Bluetooth and Node.js:
 
     ```sudo apt-get install nodejs node-gyp npm bluetooth bluez-utils libbluetooth-dev```
 
-5. On Ubuntu 12.04, you might need to get a newer nodejs with:
+6. On Ubuntu 12.04, you might need to get a newer nodejs with:
 
     ```sudo apt-get install python-software-properties
     sudo add-apt-repository ppa:chris-lea/node.js
     sudo apt-get install nodejs```
     
-6. Attach a JLink programmer to your machine (either via USB directly with an eval board or your debugger)
+7. Attach a JLink programmer to your machine (either via USB directly with an eval board or your debugger)
 
 Flash the Bootloader and S110 Softdevice 7.1.0
 ----------------------------------------------

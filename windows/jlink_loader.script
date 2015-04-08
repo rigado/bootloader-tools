@@ -41,8 +41,8 @@ verifybin rigdfu2_uicr.bin 0x10001000
 verifybin datapage.bin 0x3fc00 
 
 // enable flash writes then enable readback protection
-//w4 4001e504 1
-//loadbin protect.bin 0x10001004
+w4 4001e504 1
+loadbin protect.bin 0x10001004
 sleep 200
 
 //reset and go

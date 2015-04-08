@@ -1,3 +1,4 @@
+#!/usr/bin/env nodejs
 /*
   Tool to validate operation of node.js noble package.  Scans
   for all advertising BLE devices.
@@ -8,7 +9,6 @@
   You should have received a copy with purchase of BMD-200 product.
   If not, contact info@rigado.com for for a copy. 
 */
-#!/usr/bin/env nodejs
 
 var noble = require('noble');
 var async = require('async');

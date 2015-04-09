@@ -135,7 +135,6 @@ outFileData = []
 #Jlink Scripts
 sys_type = platform.system()
 if(sys_type == "Darwin" or sys_type == "Linux"):
-	print("Using Darwin/Linux Jlink scripts")
 	jlinkScriptReadMAC 	= 'jlink_scripts/jlink_readmacuicr.script'
 	jlinkScriptLoad 	= 'jlink_scripts/jlink_loader.script'
 	jlinkScriptLoadWApp = 'jlink_scripts/jlink_loader_wapp.script'

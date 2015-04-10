@@ -32,11 +32,11 @@ You may need to run the tools with sudo, depending on OS setup etc.
 
 To just monitor BLE device advertisements:
 
-    sudo ./monitor.js
+    sudo node monitor.js
 
 To send new code:
 
-  Usage: sudo ./dfu.js [options] <data.bin>
+  Usage: sudo node dfu.js [options] <data.bin>
 
   Options:
 

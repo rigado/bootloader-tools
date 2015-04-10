@@ -140,7 +140,7 @@ if(sys_type == "Darwin" or sys_type == "Linux"):
 	jlinkScriptLoad 	= 'jlink_scripts/jlink_loader.script'
 	jlinkScriptLoadWApp = 'jlink_scripts/jlink_loader_wapp.script'
 elif(sys_type == "Windows"):
-	jlinkScriptReadMAC 	= 'jlink_scripts\windows\jlink_readmacuicr.script'
+	jlinkScriptReadMAC 	= 'jlink_scripts\jlink_readmacuicr.script'
 	jlinkScriptLoad 	= 'jlink_scripts\windows\jlink_loader.script'
 	jlinkScriptLoadWApp = 'jlink_scripts\windows\jlink_loader_wapp.script'
 else:
@@ -188,18 +188,20 @@ if args.savemac:
 	if runJLink(jlinkScriptReadMAC) != True or os.path.exists(jlinkMACFile) != True:
 		errorHandler('Error reading MAC from UICR!')
 
-	#on osx and linux, jlinkexe creates files with no permissions; add them so we can open
-	os.chmod(jlinkMACFile, 
-		stat.S_IRUSR | stat.S_IWUSR |
-		stat.S_IRGRP | stat.S_IWGRP | 
-		stat.S_IROTH | stat.S_IWOTH)
-
 	#open the generated file and read
 	if os.stat(jlinkMACFile).st_size == 6:
 		f = open(jlinkMACFile,'rb')
 		mac = f.read()
+		f.flush()
+		f.close()
 	else:
 		errorHandler('Invalid size for MAC output file!')
+	
+	#on osx and linux, jlinkexe creates files with no permissions; add them so we can open
+	sys_type = platform.system()
+	if(sys_type == "Darwin" or sys_type == "Linux"):
+		os.chmod(jlinkMACFile, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH | stat.S_IWOTH)
+		
 else:
 	try:
 		#mac is stored little endian

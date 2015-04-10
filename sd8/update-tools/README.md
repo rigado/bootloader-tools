@@ -8,7 +8,7 @@ The BLE folder contains two scripts: dfu.js and monitor.js.
 
 ### Monitor.js
 
-Monitor.js is a Node.js script that provides a simple utility to scan for BLE devices in the area.  The device list can be filtered by invoking the script with the name of the device of interest.
+Monitor.js is a Node.js script which provides a simple utility to scan for BLE devices in the area.  The device list can be filtered by invoking the script with the name of the device of interest.
 
 For example, if the script is run with no parameters:
 ```
@@ -24,7 +24,7 @@ The output will be filtered to only devices that advertise the name RigDfu.  Rig
 
 ### Dfu.js
 
-Dfu.js is a Node.js script that interacts with the Rigado Bootloader to perform OTA updates.  Both unencrypted and encrypted OTA updates are supported by this script.  Additionally, the script can support setting the key on a device that currently has no key.  This is useful for when device provisioning is performed post manufacture.  For more details on the usage of this script, check out README.md in the ble folder.
+Dfu.js is a Node.js script that interacts with the Rigado Bootloader to perform OTA updates.  Both unencrypted and encrypted OTA updates are supported by this script.  Additionally, the script can support setting the key on a device that currently has no key.  This is useful for when device provisioning is performed post manufacture.  For more details on the usage of this script, check out [README.md](https://github.com/rigado/bootloader-tools/tree/combined/sd8/update-tools/ble) in the ble folder.
 
 ## Serial Folder
 

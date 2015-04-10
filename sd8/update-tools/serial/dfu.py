@@ -254,20 +254,20 @@ def buildConfigPacket(mac,oldkey,newkey):
     f.close()
 
     #run the ext tool
-	system_type = platform.system()
-	signimagepath = ""
-	if(system_type == "Windows"):
-		is_64bits = sys.maxsize > 2**32
-		if(is_64bits):
-			signimagepath = "..\..\image-tools\signimage\signimage-w64.exe"
-		else:
-			signimagepath = "..\..\image-tools\signimage\signimage-w32.exe"
-	elif(system_type == "Darwin"):
-		signimagepath = "../../image-tools/signimage/signimage-osx"
-	elif(system_type == "Linux"):
-		signimagepath = "../../image-tools/signimage/signimage-linux"
-	else:
-		sys.exit("Unknown system")
+    system_type = platform.system()
+    signimagepath = ""
+    if(system_type == "Windows"):
+        is_64bits = sys.maxsize > 2**32
+        if(is_64bits):
+            signimagepath = "..\..\image-tools\signimage\signimage-w64.exe"
+        else:
+            signimagepath = "..\..\image-tools\signimage\signimage-w32.exe"
+    elif(system_type == "Darwin"):
+        signimagepath = "../../image-tools/signimage/signimage-osx"
+    elif(system_type == "Linux"):
+        signimagepath = "../../image-tools/signimage/signimage-linux"
+    else:
+        sys.exit("Unknown system")
 		
     if subprocess.call([signimagepath, plainTxtPath, cipherTxtPath, prettyHexString(oldkey,sep='')]) != 0:
         errorHandler("Configuration encryption failed")
@@ -403,7 +403,6 @@ parser.add_argument("-b",   "--baud",   type=int, help="serial baudrate [115200]
 parser.add_argument("-i",   "--infile", type=str, help="packed data binary file to upload")
 parser.add_argument("-v",   "--verbose", action="store_true", help="enable verbose level 1")
 parser.add_argument("-vv",  "--vverbose", type=int, help="set verbose level (1,2)", default=0)
-parser.add_argument("-l",	"--linux", help="specify running on linux system"
 args = parser.parse_args()
 
 if(args.serial == None):

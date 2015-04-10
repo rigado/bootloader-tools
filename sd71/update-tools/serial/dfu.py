@@ -252,8 +252,23 @@ def buildConfigPacket(mac,oldkey,newkey):
     f.write(configPkt)
     f.close()
 
-    #run the ext tool
-    signimagepath = "signimage-w64.exe"
+    #determine system type
+    system_type = platform.system()
+    signimagepath = ""
+    if(system_type == "Windows"):
+        is_64bits = sys.maxsize > 2**32
+        if(is_64bits):
+            signimagepath = "..\..\image-tools\signimage\signimage-w64.exe"
+        else:
+            signimagepath = "..\..\image-tools\signimage\signimage-w32.exe"
+    elif(system_type == "Darwin"):
+        signimagepath = "../../image-tools/signimage/signimage-osx"
+    elif(system_type == "Linux"):
+        signimagepath = "../../image-tools/signimage/signimage-linux"
+    else:
+        sys.exit("Unknown system")
+    
+    #run the ext tool   
     if subprocess.call([signimagepath, plainTxtPath, cipherTxtPath, prettyHexString(oldkey,sep='')]) != 0:
         errorHandler("Configuration encryption failed")
 

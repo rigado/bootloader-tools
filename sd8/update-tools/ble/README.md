@@ -32,11 +32,11 @@ You may need to run the tools with sudo, depending on OS setup etc.
 
 To monitor BLE device advertisements:
 
-    sudo ./monitor.js
+    sudo node monitor.js
 
 To perform an OTA firmware update:
 
-  Usage: sudo ./dfu.js [options] <data.bin>
+  Usage: sudo node dfu.js [options] <data.bin>
 
   Options:
 

@@ -25,8 +25,10 @@ Memory Organization Table
 | :---------- | :-----------: | :---------: | :----------: |
 | Softdevice 7.1.0 | 0x00000  | 0x15FFF | 90112 (0x16000) |
 | User Application | 0x16000  | 0x27BFF | 72704 (0x11C00) |
-| User Application Data | 0x27C00 | 0x28BFF | 4096 (0x1000) |
+| User Application Data<sup>1</sup> | 0x27C00 | 0x28BFF | 4096 (0x1000) |
 | Bootloader Swap Space | 0x28C00 | 0x3A7FF | 72704 (0x11C00) |
 | Bootloader | 0x3A800 | 0x3F7FF | 20408 (0x5000) |
 | Bootloader Settings Data | 0x3F800 | 0x3FBFF | 1024 (0x400) |
 | Rigado Bootloader Data | 0x3FC00 | 0x3FFFF | 1024 (0x400) |
+
+<sup>1</sup> *User Application Data is maintained through application updates.*

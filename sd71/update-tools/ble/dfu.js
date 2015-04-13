@@ -1,13 +1,15 @@
 #!/usr/bin/env nodejs
 
+/*
+  Node.js tool for performing an OTA update
+  @copyright (c) Rigado, LLC. All rights reserved.
 
-//  Node.js tool for performing an OTA update
-  
-//  @copyright (c) Rigado, LLC. All rights reserved.
 
-//  Source code licensed under BMD-200 Software License Agreement.
-//  You should have received a copy with purchase of BMD-200 product.
-//  If not, contact info@rigado.com for for a copy. 
+  Source code licensed under BMD-200 Software License Agreement.
+  You should have received a copy with purchase of BMD-200 product.
+  If not, contact info@rigado.com for for a copy. 
+*/
+>>>>>>> Stashed changes:ble/dfu.js
 
 var noble = require('noble');
 var async = require('async');
@@ -391,35 +393,47 @@ function performConfigure(peripheral, chars) {
 
                 // Packet interface is now expecting the config data:
                 // 16 byte old key, 16 byte new key, 6 byte mac, 10 zeros
-                var config_packet = new Buffer(48);
+                var config_packet = new Buffer(48+44);
                 config_packet.fill(0x00);
-                old_key.copy(config_packet, 0);
-                new_key.copy(config_packet, 16);
-                new_mac.copy(config_packet, 32);
+                old_key.copy(config_packet, 0+44);
+                new_key.copy(config_packet, 16+44);
+                new_mac.copy(config_packet, 32+44);
 
                 // Send it in 3 16-byte chunks.  We'll get a response
                 // to the last one one, after the config gets flashed.
-                config1 = config_packet.slice(0, 16);
-                config2 = config_packet.slice(16, 32);
-                config3 = config_packet.slice(32, 48);
+                config1 = config_packet.slice(0, 12);
+                config2 = config_packet.slice(12, 28);
+                config3 = config_packet.slice(28, 44);
+                config4 = config_packet.slice(44, 60);
+                config5 = config_packet.slice(60, 76);
+                config6 = config_packet.slice(76, 92);
 
                 packet.write(config1, false, function(err) {
                     checkError(err);
                     packet.write(config2, false, function(err) {
-                        // We'll get a response after the last packet
-                        rxCallbackQueue.push(function(data) {
-                            if (data[0] !== OP_RESPONSE ||
-                                data[1] !== OP_CONFIG ||
-                                data[2] !== RESP_SUCCESS) {
-                                callback("Bad response: " +
-                                         formatResponse(data));
-                                return;
-                            }
-                            callback();
+                        checkError(err);
+                        packet.write(config3, false, function(err) {
+                            checkError(err);
+                            packet.write(config4, false, function(err) {
+                                checkError(err);
+                                packet.write(config5, false, function(err) {
+                                    // We'll get a response after the last packet
+                                    rxCallbackQueue.push(function(data) {
+                                        if (data[0] !== OP_RESPONSE ||
+                                            data[1] !== OP_CONFIG ||
+                                            data[2] !== RESP_SUCCESS) {
+                                            callback("Bad response: " +
+                                                     formatResponse(data));
+                                            return;
+                                        }
+                                        callback();
+                                    });
+                                    packet.write(config6, false, checkError);
+                                });
+                            });
                         });
-                        packet.write(config3, false, checkError);
                     });
-                });
+                });                
             });
         },
     ], function(err) {

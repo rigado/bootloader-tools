@@ -9,8 +9,6 @@
   You should have received a copy with purchase of BMD-200 product.
   If not, contact info@rigado.com for for a copy. 
 */
->>>>>>> Stashed changes:ble/dfu.js
-
 var noble = require('noble');
 var async = require('async');
 var util = require('util');

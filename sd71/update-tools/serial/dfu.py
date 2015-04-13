@@ -11,6 +11,8 @@ import time
 import datetime
 import tempfile
 import subprocess
+import platform
+
 from enum import IntEnum
 from struct import *
 

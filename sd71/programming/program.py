@@ -94,7 +94,9 @@ def verifyJLinkOutput(jlinkoutput):
 
 			#catch errors...
 			if "error" in line.lower():
-				errorCount+=1
+				#but... ignore debug port error, this is a device specific issue
+				if "error: could not power up debug port" not in line.lower():
+					errorCount+=1
 
 		if( verifyCount != verifyOK ):
 			print("verifyJlinkOutput: verifybin error " + str(verifyOK) + "/" +str(verifyCount))

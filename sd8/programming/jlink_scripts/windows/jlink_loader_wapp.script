@@ -40,7 +40,7 @@ verifybin binaries\rigdfu2.bin 0x3a800
 verifybin mac.bin 0x10001080
 verifybin binaries\rigdfu2_uicr.bin 0x10001014
 verifybin datapage.bin 0x3fc00
-verifybin application.bin 0x16000
+verifybin application.bin 0x18000
 
 // enable flash writes then enable readback protection
 w4 4001e504 1

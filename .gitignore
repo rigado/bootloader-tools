@@ -4,3 +4,4 @@ datapage.bin
 mac.bin
 JLinkExe
 libjlinkarm.so.*
+application.bin

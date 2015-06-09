@@ -13,17 +13,18 @@ usage: program.py [-h] [-m MAC] [-k KEY] [-t TAG] [-sm] [--verbose]
                   [--logfile LOGFILE] [-a]
 
 BMD-200 Programmer
-
+required arguments:
+  -m MAC, --mac MAC  MAC address (6 octets, big-endian)
+         or
+  -sm, --savemac     use the MAC written in the module
 optional arguments:
   -h, --help         show this help message and exit
-  -m MAC, --mac MAC  MAC address (6 octets, big-endian)
   -k KEY, --key KEY  encryption key (16 bytes, big-endian)
   -t TAG, --tag TAG  device tag for output log
-  -sm, --savemac     use the MAC written in module
   --verbose          enable verbose output
   --logfile LOGFILE  log file output
   -a, --app          program application binary (application.bin)
-  ```
+```
   
 ### MAC Address Notes
 

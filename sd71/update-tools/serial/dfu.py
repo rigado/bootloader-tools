@@ -12,7 +12,6 @@ import datetime
 import tempfile
 import subprocess
 import platform
-
 from enum import IntEnum
 from struct import *
 
@@ -224,6 +223,12 @@ def buildConfigPacket(mac,oldkey,newkey):
     if(len(mac) != 6 or len(oldkey) != 16 or len(oldkey) != 16):
         errorHandler("invalid config packet arguments!")
 
+    allzeros = bytearray()
+    allff = bytearray()
+    for i in range(0, 16):
+        allzeros.append(0x00)
+        allff.append(0xFF)
+
     configPkt = bytearray()
     #reuse signimage to encrypt...
     #sign image expects
@@ -244,6 +249,9 @@ def buildConfigPacket(mac,oldkey,newkey):
 
     printVerbose(1, "\nconfigPkt (plaintext):\n" + prettyHexString(configPkt))
 
+    if set(oldkey) == set(allzeros) or set(oldkey) == set(allff):
+        return configPkt
+
     #save temp files in directory
     tmpDir = tempfile.mkdtemp(dir=os.getcwd())
     plainTxtPath = os.path.join(tmpDir,"pt.bin")
@@ -254,7 +262,7 @@ def buildConfigPacket(mac,oldkey,newkey):
     f.write(configPkt)
     f.close()
 
-    #determine system type
+    #run the ext tool
     system_type = platform.system()
     signimagepath = ""
     if(system_type == "Windows"):
@@ -269,8 +277,7 @@ def buildConfigPacket(mac,oldkey,newkey):
         signimagepath = "../../image-tools/signimage/signimage-linux"
     else:
         sys.exit("Unknown system")
-    
-    #run the ext tool   
+		
     if subprocess.call([signimagepath, plainTxtPath, cipherTxtPath, prettyHexString(oldkey,sep='')]) != 0:
         errorHandler("Configuration encryption failed")
 
@@ -289,8 +296,6 @@ def buildConfigPacket(mac,oldkey,newkey):
     printVerbose(1, "Configuration encryption success")
 
     return cryptoPkt
-
-
 
 def doConfig(mac,oldkey,newkey):    
     printVerbose(1,"\nOpen serial port: {} baud: {}".format(args.serial, args.baud))

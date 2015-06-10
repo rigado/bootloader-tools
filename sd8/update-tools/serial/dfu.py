@@ -223,6 +223,12 @@ def buildConfigPacket(mac,oldkey,newkey):
     if(len(mac) != 6 or len(oldkey) != 16 or len(oldkey) != 16):
         errorHandler("invalid config packet arguments!")
 
+    allzeros = bytearray()
+    allff = bytearray()
+    for i in range(0, 16):
+        allzeros.append(0x00)
+        allff.append(0xFF)
+
     configPkt = bytearray()
     #reuse signimage to encrypt...
     #sign image expects
@@ -242,6 +248,9 @@ def buildConfigPacket(mac,oldkey,newkey):
     configPkt.extend([0]*10)        #10 bytes
 
     printVerbose(1, "\nconfigPkt (plaintext):\n" + prettyHexString(configPkt))
+
+    if set(oldkey) == set(allzeros) or set(oldkey) == set(allff):
+        return configPkt
 
     #save temp files in directory
     tmpDir = tempfile.mkdtemp(dir=os.getcwd())

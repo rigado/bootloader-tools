@@ -23,7 +23,7 @@ Memory Organization Table
 
 | Application | Start Address | End Address | Size (Bytes) |
 | :---------- | :-----------: | :---------: | :----------: |
-| Softdevice 7.1.0 | 0x00000  | 0x15FFF | 90112 (0x16000) |
+| SoftDevice S110 7.1.0 | 0x00000  | 0x15FFF | 90112 (0x16000) |
 | User Application | 0x16000  | 0x27BFF | 72704 (0x11C00) |
 | User Application Data<sup>1</sup> | 0x27C00 | 0x28BFF | 4096 (0x1000) |
 | Bootloader Swap Space | 0x28C00 | 0x3A7FF | 72704 (0x11C00) |

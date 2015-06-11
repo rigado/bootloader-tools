@@ -8,7 +8,7 @@ Python 3.x
 
 ## Genimage
 
-The genimage.py script generates unencrypted firmware update images.  The script requires an Intel HEX file as input and outputs a binary file.  Genimage.py will attempt to automatically determine the start address of the application.  However, it can also be specified directly on the command line.  See README.md in the genimage folder for more information on the usage of this tool.  Genimage can also be used to generate OTA updates for the bootloader and softdevices but this usage is not recommended for production product.
+The genimage.py script generates unencrypted firmware update images.  The script requires an Intel HEX file as input and outputs a binary file.  Genimage.py will attempt to automatically determine the start address of the application.  However, it can also be specified directly on the command line.  See README.md in the genimage folder for more information on the usage of this tool.  Genimage can also be used to generate firmware package updates for the Bootloader and SoftDevice but this usage is not recommended for production product.
 
 ## Signimage
 

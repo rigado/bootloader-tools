@@ -1,10 +1,10 @@
-Softdevice 7.1.x Support
+SoftDevice S110 7.1.x Support
 =========================
 
 Required Resources
 ------------------
 
-The following resources are required when using Softdevice 7.1.x:
+The following resources are required when using SoftDevice S110 7.1.x:
 * Total application image size of < 72 KB
 * Total application storage space of < 4 KB
 * Secure Bootloader requires 20 KB of storage space along with 2 KB for settings and information
@@ -14,7 +14,7 @@ Application Setup
 -----------------
 
 The application must have an initial start location at 0x16000 which is currently the end of the
-S110 soft device as of version 7.1.0.  Application settings are reserved at the start of memory
+SoftDevice S110 as of version 7.1.0.  Application settings are reserved at the start of memory
 location 0x27000 and has as size of 4 KB (1 page on the nrf51822 256KB part).  The remainder of
 flash memory is used for swap space storage and the bootloader.
 

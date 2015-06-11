@@ -1,6 +1,6 @@
 # Image Tools
 
-This folder contains tools for generating unencrypted and encrypted OTA update images.
+This folder contains tools for generating unencrypted and encrypted firmware update images.
 
 ## Requirements
 
@@ -8,15 +8,15 @@ Python 3.x
 
 ## Genimage
 
-The genimage.py script generates unencrypted OTA update images.  The script requires an Intel HEX file as input and outputs a binary file.  Genimage.py will attempt to automatically determine the start address of the application.  However, it can also be specified directly on the command line.  See README.md in the genimage folder for more information on the usage of this tool.  Genimage can also be used to generate OTA updates for the bootloader and softdevices but this usage is not recommended for production product.
+The genimage.py script generates unencrypted firmware update images.  The script requires an Intel HEX file as input and outputs a binary file.  Genimage.py will attempt to automatically determine the start address of the application.  However, it can also be specified directly on the command line.  See README.md in the genimage folder for more information on the usage of this tool.  Genimage can also be used to generate OTA updates for the bootloader and softdevices but this usage is not recommended for production product.
 
 ## Signimage
 
-The Signimage tool is a CPP program compiled against the Crypto++ library.  The only use of this tool is to encrypt data using AES 128-bit EAX mode.  Different executables for the various system types are provided.  At preset, the program is built for Linux, OS X, and Windows 64-bit and 32-bit systems.  If another system is needed, please contact Rigado to get the source for this tool.
+The Signimage tool is a C++ program compiled against the Crypto++ library.  The only use of this tool is to encrypt firmware update images using AES 128-bit EAX mode.  Different executables for the various system types are provided.  At preset, the program is built for Linux, OS X, and Windows 64-bit and 32-bit systems.  If another system is needed, please contact Rigado to get the source for this tool.
 
-Signimage takes in an unencrypted OTA update image and the private key.  The program then outputs an encrypted binary with the appropriate information for the bootloader.  
+Signimage takes in an unencrypted firmware update image and the private key.  The program outputs an encrypted binary with the appropriate information for the bootloader.  
 
-> Generating images with a key of all 0s or Fs will NOT produce a valid image for the unencrypted bootloader.  If using the unencrypted bootloader, Signimage is not used.
+> Generating images with a key of all 0s or Fs will NOT produce a valid image for the unencrypted bootloader.  If using the unencrypted bootloader, signimage is not used.
 
 ### Linux
 

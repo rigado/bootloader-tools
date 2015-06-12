@@ -34,7 +34,7 @@ The Rigado module MAC address is stored at 0x10001080.
 
 ### Key Notes
 
-The private key for a device is stored in the Rigado Bootloader storage data at 0x3FC00.  This key is used for decryption of application images during secure OTA updates.  If the key is not specified, then the bootloader will behave in an unsecure manner.  This means that no encryption of the application image is necessary to use the bootloader.  This is equally true if a key of all 0s or all Fs is specified.
+The private key for a device is stored in the Rigado Bootloader storage data at 0x3FC00.  This key is used for decryption of application images during secure firmware updates.  If the key is not specified, then the bootloader will behave in an unsecure manner.  This means that no encryption of the application image is necessary to use the bootloader.  This is equally true if a key of all 0s or all Fs is specified.
 
 ### Application Programming
 

@@ -1,10 +1,10 @@
-SoftDevice S110 7.1.x Support
+SoftDevice S110 7.1.0 Support
 =========================
 
 Required Resources
 ------------------
 
-The following resources are required when using SoftDevice S110 7.1.x:
+The following resources are required when using SoftDevice S110 7.1.0:
 * Total application image size of < 72 KB
 * Total application storage space of < 4 KB
 * Secure Bootloader requires 20 KB of storage space along with 2 KB for settings and information

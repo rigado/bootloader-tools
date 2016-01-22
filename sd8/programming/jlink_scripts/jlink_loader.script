@@ -4,6 +4,9 @@ usb 0
 //set SWD
 si 1
 
+//set speed
+speed 4000
+
 //set device
 device NRF51822_XXAA
 

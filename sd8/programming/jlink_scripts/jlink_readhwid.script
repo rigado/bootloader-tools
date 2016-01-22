@@ -7,14 +7,11 @@ si 1
 //set speed
 speed 4000
 
-//set device
-device NRF51822_XXAA
-
 //reset
 r
 
 //save mac from UICR
-savebin mac.bin 0x10001080 6
+savebin hwid.bin 0x1000005c 2
 
 //reset and go
 r

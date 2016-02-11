@@ -1,4 +1,4 @@
-/connect USB 0
+//connect USB 0
 usb 0
 
 //set SWD

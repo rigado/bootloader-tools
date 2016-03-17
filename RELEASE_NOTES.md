@@ -1,9 +1,5 @@
 # Bootloader Tools Version 2.0 Release Candidate 1
 
-This is a prerelease of bootloader-tools.  The binaries contained in this release
-may have undiscovered bugs or issues.  If you find an issue, please e-mail
-modules@rigado.com for support.
-
 ## Highlights
 
 ### New Bootloader Binaries
@@ -47,7 +43,8 @@ If a conflict occurs, the default option will be used.
 
 ### New Bootloader Features
 Bootloader version information is now available at a static location within
-the bootloader binary.  See the documentation for more details.
+the bootloader binary.  See the documentation for more details.  The src folder 
+of this repository contains C files to help in gathering this information.
 
 ### Upcoming features
 Tired of slow OTA updates?  Make a patch!  Instead of sending the whole
@@ -55,6 +52,11 @@ firmware image, a patch is simply the difference between a previous firmware
 version and the latest firmware version.  The patch generation tools will
 be available on Rigdo's webiste.  Rigablue will be updated to support the
 patching feature once it is ready.
+
+### SoftDevice S110 7.1 Support removed
+SoftDevice S110 7.x support has been removed from this release.  It will reamin
+available for the previous release of bootloader-tools.  Due to this, the
+folder structure for bootloader tools has been condensed into one tree.
 
 ## Known Limitations
 The readback protection mechanism on the nRF52 has changed.  We are working to

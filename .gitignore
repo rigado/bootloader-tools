@@ -2,6 +2,7 @@ __pycache__
 log.txt
 datapage.bin
 mac.bin
-JLinkExe
-libjlinkarm.so.*
 application.bin
+*.sbin
+DS_Store
+*.pyc

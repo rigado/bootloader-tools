@@ -1,4 +1,4 @@
-# Bootloader Tools Version 2.0 Release Candidate 1
+# Bootloader Tools Version 2.0
 
 ## Highlights
 

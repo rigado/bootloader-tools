@@ -250,7 +250,7 @@ class RigDfuGen(object):
         if (initial_sp % 4) != 0:
             return False
         # invalid SP?  assume 64k max RAM
-        if initial_sp < 0x20000000 or initial_sp >= (0x20000000 + 64 * 1024):
+        if initial_sp < 0x20000000 or initial_sp > (0x20000000 + 64 * 1024):
             return False
         # non-thumb reset vector?
         if (reset % 2) != 1:

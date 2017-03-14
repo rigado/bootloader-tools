@@ -16,6 +16,7 @@ from enum import IntEnum
 from struct import *
 
 verbose = 0
+checkBootloaderVersion = False
 
 class Serial_Op_Code(IntEnum):
     Start            = 1
@@ -25,6 +26,8 @@ class Serial_Op_Code(IntEnum):
     Activate_N_Reset = 5
     Reset            = 6
     Config           = 9
+    InitPatch        = 10
+    Patch_Xfer       = 11
     Response         = 16
 
 class Serial_Op_Status(IntEnum):
@@ -55,10 +58,17 @@ def printResult(verbosity,result):
     else:
         printVerbose(verbosity,"Fail")
 
+    return result
+
 #error handler
 def errorHandler(errString):
     print('Error: ' + errString)
     sys.exit(1)
+
+def verifyVersion(version):
+    printVerbose(5, 'Verify RigDFU version')
+    if not (version.find("3.2.1") == -1):
+        errorHandler('RigDFU v3.2.1 cannot be updated as a direct bootloader update. See Errata information in Release Notes.')
 
 #check hex string
 def parseHexString(inputString, numBytes):
@@ -91,7 +101,10 @@ def openSerial(portId,baud):
             if(rx==None):
                 printVerbose(0,"openSerial - No response from RigDFU, retrying...")
             else:
-                printVerbose(0,rx.decode("utf-8").strip())
+                version = rx.decode("ascii").strip()
+                printVerbose(0,version)
+                if checkBootloaderVersion:
+                    verifyVersion(version)
                 connected = True
                 break
 
@@ -101,12 +114,15 @@ def openSerial(portId,baud):
             sp.close()
             errorHandler("openSerial - No response from RigDFU")
             return None
-    except:
+    except Exception as e:
+        print(str(e))
         errorHandler("openSerial - RigDFU initialization error")
 
 def txPacket(serialPort,opCode,txData):
     if(serialPort.isOpen() == False):
         errorHandler("txPacket - invalid Serial object")
+
+    serialPort.flush()
 
     if(txData == None or len(txData) <= 253):
         txBytes = bytearray()
@@ -350,7 +366,67 @@ def doDFU(startPkt,initPkt,imageBin):
     activateNresetDFU(serialPort)
 
     printVerbose(0,"\nWaiting for activation...")
-    time.sleep(3)
+    time.sleep(1)
+
+    printVerbose(0,"\nDFU Complete!")
+    return True
+
+def doDFUPatch(startPkt, initPkt, initPatchPkt, patchBin):
+    result = False
+
+    printVerbose(0,"\nOpen serial port: {} baud: {}".format(args.serial, args.baud))
+    serialPort = openSerial(args.serial,args.baud)
+
+    #start message
+    printVerbose(0,"\nStarting DFU...")
+    result = startDFU(serialPort,startPkt)
+
+    if not result:
+        printVerbose(0, "\nStart DFU Failed")
+        return
+
+    #init message
+    printVerbose(0,"\nInitializing DFU...")
+    result = initDFU(serialPort,initPkt)
+
+    if not result:
+        printVerbose(0, "\nStart DFU Failed")
+        return
+
+    #init patch message
+    printVerbose(0,"\nInitializing Patch...")
+    result = initPatch(serialPort, initPatchPkt)
+
+    if not result:
+        printVerbose(0, "\nStart DFU Failed")
+        return
+
+    #patch transfer
+    printVerbose(0,"\nUploading image...")
+    result = xferPatchImageDFU(serialPort, patchBin)
+
+    if not result:
+        printVerbose(0, "\nStart DFU Failed")
+        return
+
+    #image validation
+    printVerbose(0,"\nValidating image...")
+    result = validateDFU(serialPort)
+
+    if not result:
+        printVerbose(0, "\nStart DFU Failed")
+        return
+
+    #image activation
+    printVerbose(0,"\nActivating image...")
+    result = activateNresetDFU(serialPort)
+
+    if not result:
+        printVerbose(0, "\nStart DFU Failed")
+        return
+
+    printVerbose(0,"\nWaiting for activation...")
+    time.sleep(1)
 
     printVerbose(0,"\nDFU Complete!")
     return True
@@ -416,13 +492,35 @@ def xferimageDFU(serialPort,imageBinary,chunkSz=192):
     printResult(0,result)
     return result
 
+def xferPatchImageDFU(serialPort,patchBinary,chunkSz=192):
+    result = True
+    imageTotalSz = len(patchBinary)
+    offset = 0
+
+    while(offset < imageTotalSz):
+        curChunkSz = min(chunkSz,(imageTotalSz-offset))
+        txBytes = patchBinary[offset:(offset+curChunkSz)]
+        offset += curChunkSz
+
+        txPacket(serialPort,Serial_Op_Code.Patch_Xfer,txBytes)
+
+        if offset != imageTotalSz:
+            result &= rxOpResponse(serialPort,Serial_Op_Code.Patch_Xfer, Serial_Op_Status.Success_Need_Addl_Data)
+        else:
+            result &= rxOpResponse(serialPort, Serial_Op_Code.Patch_Xfer, Serial_Op_Status.Success)
+        
+        printVerbose(0,"xfered {}/{} bytes".format(offset, imageTotalSz))
+  
+    printResult(0,result)
+    return result
+
 def validateDFU(serialPort):
     txPacket(serialPort,Serial_Op_Code.Validate,None)
-    printResult(0,rxOpResponse(serialPort,Serial_Op_Code.Validate,timeout_s=5))
+    return printResult(0,rxOpResponse(serialPort,Serial_Op_Code.Validate,timeout_s=5))
 
 def activateNresetDFU(serialPort):
     txPacket(serialPort,Serial_Op_Code.Activate_N_Reset,None)
-    printResult(0,rxOpResponse(serialPort,Serial_Op_Code.Activate_N_Reset,timeout_s=5))
+    return printResult(0,rxOpResponse(serialPort,Serial_Op_Code.Activate_N_Reset,timeout_s=5))
 
 #dfu data
 parser = argparse.ArgumentParser(description="RigDFU2 Serial Updater")
@@ -431,6 +529,7 @@ parser.add_argument("-K",   "--newkey", type=str, help="new key (16 bytes, big-e
 parser.add_argument("-k",   "--oldkey", type=str, help="old key (16 bytes, big-endian)")
 parser.add_argument("-s",   "--serial", type=str, help="serial port")
 parser.add_argument("-b",   "--baud",   type=int, help="serial baudrate [115200]", default=115200)
+parser.add_argument("-p",   "--patch", action="store_true", help="set when sending a patch file")
 parser.add_argument("-i",   "--infile", type=str, help="packed data binary file to upload")
 parser.add_argument("-v",   "--verbose", action="store_true", help="enable verbose level 1")
 parser.add_argument("-vv",  "--vverbose", type=int, help="set verbose level (1,2)", default=0)
@@ -501,23 +600,35 @@ elif(args.infile != None):
     printVerbose(1,"\nRead {} bytes from file: {}".format(len(bindata),args.infile))
 
     #prepare to unpack
-    StartPkt    = namedtuple('StartPkt', 'sd bl app')
-    InitPkt     = namedtuple('InitPkt', 'iv tag')
+    StartPkt        = namedtuple('StartPkt', 'sd bl app')
+    InitPkt         = namedtuple('InitPkt', 'iv tag')
+    PatchInitPkt    = namedtuple('PatchInitPkt', 'len crc oldcrc')
 
     #unpack
     try:
         #raw binary
-        startBin    = bindata[:12]
-        initBin     = bindata[12:44]
-        imageBin    = bindata[44:]     
+        if(args.patch):
+            startBin    = bindata[:12]
+            initBin     = bindata[12:44]
+            patchInitBin= bindata[44:56]
+            imageBin    = bindata[56:]
+        else:  
+            startBin    = bindata[:12]
+            initBin     = bindata[12:44]
+            imageBin    = bindata[44:]     
 
         #parse to struct
         startPkt    = StartPkt._make(unpack('<LLL', startBin))
         initPkt     = InitPkt._make((initBin[:16], initBin[16:]))
 
+        if(args.patch):
+            patchInitPkt = PatchInitPkt._make(unpack('<LLL', patchInitBin))
+
         printVerbose(1, "startPkt: " + prettyHexString(startBin))
         printVerbose(1, "cryptoIV: "  + prettyHexString(initPkt.iv))
         printVerbose(1, "cryptoTag: " + prettyHexString(initPkt.tag))
+        if(args.patch):
+            printVerbose(1, "patchInitPkt: " + prettyHexString(patchInitBin))
 
     except:
         errorHandler("Unexpected binary file format!")
@@ -534,10 +645,27 @@ elif(args.infile != None):
     if (startPkt.app and (startPkt.sd or startPkt.bl)):
         errorHandler("application must be sent by itself")
 
-    if ((startPkt.sd + startPkt.bl + startPkt.app) != len(imageBin)):
-        errorHandler("total image length {} doesn't match expected {}".format(len(imageBin), (sizes.sd + sizes.bl + sizes.app)))
+    if (args.patch and (startPkt.sd or startPkt.bl)):
+        errorHandler("only application can be patched")
+
+    if(not args.patch):
+        if ((startPkt.sd + startPkt.bl + startPkt.app) != len(imageBin)):
+            errorHandler("total image length {} doesn't match expected {}".format(len(imageBin), (sizes.sd + sizes.bl + sizes.app)))
     
-    doDFU(startBin,initBin,imageBin)
+    if(args.patch):
+        if (patchInitPkt.len != len(imageBin)):
+            errorHandler("not enough patch data is present")
+
+        if (patchInitPkt.crc == 0 or patchInitPkt.oldcrc == 0):
+            errorHandler("both crc values must be present in the patch")
+
+    if(startPkt.sd or startPkt.bl):
+        checkBootloaderVersion = True
+
+    if(args.patch):
+        doDFUPatch(startBin,initBin,patchInitBin,imageBin)
+    else:
+        doDFU(startBin,initBin,imageBin)
 else:
     errorHandler("Input binary file must be specified with -i/--infile.")
 

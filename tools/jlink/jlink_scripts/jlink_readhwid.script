@@ -1,0 +1,22 @@
+//connect USB 0
+usb 0
+
+//set SWD
+si 1
+
+//set speed
+speed 4000
+
+//set device
+device NRF51822_XXAA
+
+//reset
+r
+
+//save mac from UICR
+savebin hwid.bin 0x1000005c 2
+
+//reset and go
+r
+g
+exit

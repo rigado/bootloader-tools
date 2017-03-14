@@ -32,20 +32,23 @@ You may need to run the tools with sudo, depending on OS setup etc.
 
 To monitor BLE device advertisements:
 
-    sudo node monitor.js
+    node monitor.js
 
 To perform an OTA firmware update:
 
-  Usage: sudo node dfu.js [options] <data.bin>
+  Usage: dfu [options] <data.bin>
 
   Options:
 
     -h, --help          output usage information
     -V, --version       output the version number
     -m, --mac <MAC>     Only update device with this MAC
+    -k, --oldkey <KEY>  Configure device: required, if device has a key
     -K, --newkey <KEY>  Configure device: change key to KEY
     -M, --newmac <MAC>  Configure device: change MAC to MAC
     -t, --test          Just test connection, don't configure or send image
+    -p, --patch         Send a patch file instead of a full image
+    -s, --sizepacket    Request the device MTU, and use that as packet size
     <data.bin>          Packed data file to send
 
 * `data.bin` is a raw binary file containing the header, encryption
@@ -69,3 +72,8 @@ To perform an OTA firmware update:
   programmed to the device.  This script, currently, cannot be
   used to change the MAC address if a key has already been
   programmed.
+
+* The `--sizepacket` option is only available if the SoftDevice 
+  version is at least S132 3.0.0 with bootloader v3.1.1 or
+  greater.  This will use the largest supported MTU by both
+  devices.

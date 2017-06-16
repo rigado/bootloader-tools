@@ -147,7 +147,7 @@ commander.
 
 // Parse MAC address
 if (commander.mac) {
-    mac_address = parse_hex_string(commander.mac, 6);
+    mac_address = validate_hex_string(commander.mac, 6);
     printf("Target address: " + mac_address);
 }
 

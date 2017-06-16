@@ -604,18 +604,63 @@ elif(args.infile != None):
     InitPkt         = namedtuple('InitPkt', 'iv tag')
     PatchInitPkt    = namedtuple('PatchInitPkt', 'len crc oldcrc')
 
+    def extractBytes(buffer, start, end=None):
+        result = None
+
+        if end == None:
+            print("{0} - end".format(start))
+            result = buffer[start:]
+        else:
+            print("{0} - {1}".format(start, end))
+            result = buffer[start:end]
+        return result
+
+    def has_patch_key(byte_array):
+
+        patch_key = [0xac, 0xb3, 0x37, 0xe8, 0xd0, 0xeb, 0x40, 0x90,
+                     0xa4, 0xf3, 0xbb, 0x85, 0x7a, 0x5b, 0x2a, 0xf6]
+        byte_array_list = list(byte_array)
+
+        result = False
+
+        if patch_key == byte_array_list:
+            result = True
+        
+        return result
+
+    patch_key_size = 16
+    start_packet_size = 12
+    init_packet_size = 32
+    patch_init_packet_size = 12
+
     #unpack
     try:
+
         #raw binary
-        if(args.patch):
-            startBin    = bindata[:12]
-            initBin     = bindata[12:44]
-            patchInitBin= bindata[44:56]
-            imageBin    = bindata[56:]
+        if args.patch == True or has_patch_key(bindata[:patch_key_size]):
+
+            patch_key_start         = 0
+            start_packet_start      = patch_key_start + patch_key_size
+            init_packet_start       = start_packet_start + start_packet_size
+            patch_init_packet_start = init_packet_start + init_packet_size
+            image_bin_start         = patch_init_packet_start + patch_init_packet_size
+
+            patchKeyBin  = bindata[patch_key_start:start_packet_start]
+            startBin     = bindata[start_packet_start:init_packet_start]
+            initBin      = bindata[init_packet_start:patch_init_packet_start]
+            patchInitBin = bindata[patch_init_packet_start:image_bin_start]
+            imageBin     = bindata[image_bin_start:]
+
+            args.patch = True
+
         else:  
-            startBin    = bindata[:12]
-            initBin     = bindata[12:44]
-            imageBin    = bindata[44:]     
+            start_packet_start = 0
+            init_packet_start  = start_packet_start + start_packet_size
+            image_bin_start    = init_packet_start + init_packet_size
+            
+            startBin = bindata[start_packet_start:init_packet_start]
+            initBin  = bindata[init_packet_start:image_bin_start]
+            imageBin = bindata[image_bin_start:]
 
         #parse to struct
         startPkt    = StartPkt._make(unpack('<LLL', startBin))

@@ -45,11 +45,11 @@ def get_all_config_files(directory):
 
   #iterate over list of all files
   for file in all_files:
-    
+
     #if this file matches the pattern .cfg
     if fnmatch.fnmatch(file, '*.cfg'):
       #split the path into the last section (short_file), and everything else (head)
-      head, short_file = os.path.split(file) 
+      head, short_file = os.path.split(file)
 
       short_file = "{0}{1}".format(directory, short_file)
       #add the file to the list of config files
@@ -67,7 +67,12 @@ def get_config_files_string(directory):
 
   return prompt_string
 
+def key_is_empty(key):
+    if key == '00000000000000000000000000000000' or \
+        key == 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF':
+        return True
 
+    return False
 
 ####################
 #script entry point#
@@ -150,9 +155,7 @@ if readback_protection and args.enablereadback:
 elif readback_protection == False and args.disablereadback == True:
 	utils.log(utils.LOG_LEVEL_INFO, 'Warning: Readback protection already disabled by default. You can drop -r')
 
-if args.enablereadback or \
-  (args.key != '00000000000000000000000000000000' and \
-   args.key != 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'):
+if args.enablereadback or not key_is_empty(args.key):
 	readback_protection = True
 
 if args.disablereadback:
@@ -286,7 +289,7 @@ if result == False:
 jlink.cleanup()
 
 if cfg.device.family == 'nrf51' or cfg.device.family == 'nrf52':
-	if readback_protection:
+	if readback_protection and key_is_empty(args.key):
 		nrfjprog.protect(device)
 	nrfjprog.reset(device)
 

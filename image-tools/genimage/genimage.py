@@ -2,12 +2,12 @@
 
 '''
   Tool to build RigDfu firmware images from hex files
-  
+
   @copyright (c) Rigado, LLC. All rights reserved.
 
-  Source code licensed under BMD-200 Software License Agreement.
-  You should have received a copy with purchase of BMD-200 product.
-  If not, contact info@rigado.com for for a copy. 
+  Source code licensed under BMD Software License Agreement.
+  You should have received a copy with purchase of Rigado product.
+  If not, contact info@rigado.com for for a copy.
 '''
 
 import sys
@@ -44,11 +44,11 @@ def get_all_config_files(directory):
 
   #iterate over list of all files
   for file in all_files:
-    
+
     #if this file matches the pattern .cfg
     if fnmatch.fnmatch(file, '*.cfg'):
       #split the path into the last section (short_file), and everything else (head)
-      head, short_file = os.path.split(file) 
+      head, short_file = os.path.split(file)
 
       short_file = "{0}{1}".format(directory, short_file)
       #add the file to the list of config files
